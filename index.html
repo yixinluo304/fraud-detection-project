@@ -161,7 +161,7 @@
   
               <!-- GitHub link -->
               <span class="link-block">
-                <a href="https://github.com/YOUR_USERNAME/YOUR_REPO" target="_blank"
+                <a href="https://github.com/JoleenShao/fraud-detection-project" target="_blank"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon"><i class="fab fa-github"></i></span>
                   <span>Code</span>
@@ -542,51 +542,131 @@
 <section class="section hero">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
+      <div class="column column is-fullwidth">
         <h2 class="title is-3">Models and Results</h2>
-        <div class="content has-text-justified">
-          <p>
-            We benchmark several models: Logistic Regression, Random Forest, and an Adversarially-trained Neural Network. Performance is compared using AUC and F1 Score.
-          </p>
-          <img src="static/images/roc_curve.png" alt="ROC Curve Comparison">
-          <img src="static/images/confusion_matrix.png" alt="Confusion Matrix">
-          <p>
-            Our adversarial model improved recall by 15% compared to baseline, without sacrificing precision.
-          </p>
+        <section class="section" style="padding: 0;">
+          <div class="has-text-centered" style="margin-bottom: 2rem;">
+            <iframe 
+              src="radar_model_comparison.html" 
+              style="width: 100%; max-width: 1000px; height: 600px; border: none; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"
+              loading="lazy">
+            </iframe>
+          </div>          
+        </section>
+        <div class="has-text-centered" style="margin-top: 2rem; margin-bottom: 2rem;">
+          <img src="static/images/model_comp.png" 
+               alt="Model Comparison Bar Chart"
+               style="max-width: 700px; width: 100%; height: auto;  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- Model Evaluation Summary -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="box" style="border-left: 5px solid #3273dc; background-color: #f9fafe;">
+      <h2 class="title is-4 has-text-primary">
+        Model Evaluation Summary
+      </h2>
+
+      <p style="margin-bottom: 1rem;">
+        <strong class="has-text-success">✅ Random Forest</strong> is the <strong>best choice</strong> for your fraud detection use case, especially where <em>recall</em> and <em>AUC</em> are crucial (e.g., catching fraudulent cases without too many false negatives)
+      </p>
+
+      <p style="margin-bottom: 1rem;">
+        <strong class="has-text-link">💡 MLP</strong> is competitive and could be explored further with additional hyperparameter tuning or adversarial training
+      </p>
+
+      <p>
+        <strong class="has-text-danger">⚠️ Avoid KNN and Dummy</strong> classifiers, as they offer <em>minimal predictive value</em> in this context and are not suitable for production-level fraud detection
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- End Models and Results -->
+<!-- Three-Column Informational Cards -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-variable is-8">
 
-<!--BibTex citation -->
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
-    </div>
-</section>
-<!--End BibTex citation -->
-
-
-  <footer class="footer">
-  <div class="container">
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-
-          <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
-            You are free to borrow the source code of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-
+      <!-- Card 1: Robustness -->
+      <div class="column">
+        <div class="card">
+          <header class="card-header has-background-primary-light">
+            <p class="card-header-title has-text-primary">
+              🔎 Robustness to Perturbations
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              We introduced adversarial noise (ε = 0.1) using FGSM to test model stability.
+              <br><br>
+              <strong>Random Forest AUC dropped:</strong> 0.920 → 0.796  
+              <br>
+              <strong>MLP dropped:</strong> 0.905 → 0.811
+              <br><br>
+              Accuracy alone isn’t enough — real-world systems must handle manipulation.
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- Card 2: Attack Method -->
+      <div class="column">
+        <div class="card">
+          <header class="card-header has-background-link-light">
+            <p class="card-header-title has-text-link">
+              🧪 Adversarial Attack
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              We used <strong>Fast Gradient Sign Method (FGSM)</strong> to craft small input changes.  
+              <br><br>
+              Features like <code>Amount</code> and <code>V1–V5</code> were perturbed just enough to flip predictions.  
+              <br><br>
+              These inputs looked “normal” but misled the models.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Implications -->
+      <div class="column">
+        <div class="card">
+          <header class="card-header has-background-success-light">
+            <p class="card-header-title has-text-success">
+              📈 Real-World Implications
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              Deploying fraud models? Accuracy isn’t enough.  
+              <br><br>
+              We recommend:
+              <ul>
+                <li>Robustness testing</li>
+                <li>Adversarial training</li>
+                <li>Transparent benchmarks</li>
+              </ul>
+              Banks need adaptive AI to fight real-world fraud.
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-</footer>
+</section>
+
+
+
+
+
+
 
 <!-- Statcounter tracking code -->
   
