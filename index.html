@@ -44,6 +44,83 @@
   <script src="static/js/bulma-slider.min.js"></script>
   <script src="static/js/index.js"></script>
 </head>
+
+<head>
+  ...
+  <style>
+    .timeline {
+      border-left: 3px solid #007acc;
+      margin-left: 2rem;
+      padding-left: 1rem;
+    }
+
+    .timeline-step {
+      background: #f9f9f9;
+      border-left: 6px solid #007acc;
+      margin: 1.5rem 0;
+      padding: 1rem 1.5rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      font-family: 'Noto Sans', sans-serif;
+      transition: background 0.3s ease;
+    }
+
+    .timeline-step:hover {
+      background: #e3f2fd;
+    }
+
+    .timeline-step h3 {
+      margin-bottom: 0.5rem;
+      color: #007acc;
+      font-weight: 600;
+    }
+
+    .timeline-step p {
+      margin: 0;
+      font-size: 0.95rem;
+      color: #333;
+    }
+  </style>
+</head>
+
+
+<head>
+  ...
+  <style>
+    .explanation-section {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+      gap: 1.5rem;
+    }
+
+    .speech-bubble {
+      background: #f0f8ff;
+      border: 2px solid #007acc;
+      border-radius: 15px;
+      padding: 1rem 1.5rem;
+      width: 280px;
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: 'Noto Sans', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .speech-bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 30px;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-top-color: #007acc;
+    }
+  </style>
+</head>
+
 <body>
 
 
@@ -202,20 +279,40 @@
 <!-- Introduction -->
 
 <!-- Workflow -->
+<!-- Workflow Section with Timeline -->
+
 <section class="section hero">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Workflow</h2>
-        <div class="content has-text-justified">
-          <p>Our project follows a structured pipeline from raw data to adversarial evaluation.</p>
-          <img src="static/images/workflow.png" alt="Workflow Diagram">
+        <div class="has-text-centered" style="margin-bottom: 2rem;">
+          <img src="static/images/workflow.png" alt="Workflow Diagram" style="max-width: 100%; height: auto #007acc; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+        </div>
+        <div class="timeline">
+          
+          <div class="timeline-step">
+            <h3>Step 1: Data Storage & Preprocessing 🧊</h3>
+            <p>Raw transaction data is stored in <strong>Snowflake</strong> and cleaned using <strong>SQL</strong>. This prepares a structured foundation for analysis.</p>
+          </div>
+
+          <div class="timeline-step">
+            <h3>Step 2: Analytics & Machine Learning 🧠</h3>
+            <p>We perform EDA and model training in <strong>Python</strong> using <strong>Amazon EC2</strong>. Visualization tools help explore data trends and model performance.</p>
+          </div>
+
+          <div class="timeline-step">
+            <h3>Step 3: Save Results & Output 📦</h3>
+            <p>Final predictions and models are saved to <strong>Amazon S3</strong>, written back to <strong>Snowflake</strong>, and shared through <strong>GitHub</strong> for reproducibility.</p>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
-<!-- Workflow -->
+
+
 
 
 <!DOCTYPE html>
