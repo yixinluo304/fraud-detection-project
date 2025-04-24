@@ -602,7 +602,7 @@
           </header>
           <div class="card-content">
             <div class="content">
-              We introduced adversarial noise (ε = 0.1) using FGSM to test model stability.
+              We introduced adversarial noise (ε = 1.1) using  to test model stability.
               <br><br>
               <strong>Random Forest AUC dropped:</strong> 0.920 → 0.796  
               <br>
@@ -614,25 +614,7 @@
         </div>
       </div>
 
-      <!-- Card 2: Attack Method -->
-      <div class="column">
-        <div class="card">
-          <header class="card-header has-background-link-light">
-            <p class="card-header-title has-text-link">
-              🧪 Adversarial Attack
-            </p>
-          </header>
-          <div class="card-content">
-            <div class="content">
-              We used <strong>Fast Gradient Sign Method (FGSM)</strong> to craft small input changes.  
-              <br><br>
-              Features like <code>Amount</code> and <code>V1–V5</code> were perturbed just enough to flip predictions.  
-              <br><br>
-              These inputs looked “normal” but misled the models.
-            </div>
-          </div>
-        </div>
-      </div>
+    
 
       <!-- Card 3: Implications -->
       <div class="column">
