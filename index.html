@@ -110,20 +110,95 @@
 
 
 <!-- Introduction -->
+<!-- Introduction Section with Tabs -->
 <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Introduction</h2>
+
+        <!-- Tabs -->
+        <div class="tabs is-toggle is-fullwidth is-medium">
+          <ul>
+            <li class="is-active" id="intro-tab-1-btn"><a>Why Fraud Matters</a></li>
+            <li id="intro-tab-2-btn"><a>Adversarial Examples in ML</a></li>
+            <li id="intro-tab-3-btn"><a>Our Project Goal</a></li>
+          </ul>
+        </div>
+
+        <!-- Tab Contents -->
         <div class="content has-text-justified">
-          <p>
-            Credit card fraud is a significant threat in financial systems, causing billions in losses each year. Traditional models often fail when malicious actors slightly manipulate features. In this project, we explore the use of adversarial examples to simulate realistic fraud attempts and evaluate model robustness.
-          </p>
+
+          <!-- Tab 1: Side-by-side layout -->
+          <div id="intro-tab-1" class="tab-content">
+            <div class="columns is-vcentered is-variable is-8">
+              <div class="column is-half">
+                <p>
+                  Credit card fraud, which costs the global economy over <strong>$5.1 trillion annually</strong>, is more than a technical challenge—it is a policy issue with far-reaching consequences.
+                  Fraud affects not only private financial institutions but also the integrity and inclusiveness of the broader financial system.
+                  High fraud rates drive up the cost of financial services, disproportionately affecting low-income and vulnerable populations who may already face barriers to banking access.
+                </p>
+                <p class="mt-3">
+                  Effective fraud detection isn’t just about better algorithms—it’s about creating regulatory environments that incentivize transparency,
+                  safeguard user data, and foster the development of resilient AI systems that can adapt to adversarial behavior.
+                  In this light, addressing credit card fraud is central to ensuring trust, equity, and security in digital finance.
+                </p>
+              </div>
+              <div class="column is-half has-text-centered">
+                <img src="static/images/fraud_impact.png" alt="Impact of Credit Card Fraud" style="max-width: 100%;">
+                <p class="has-text-centered mt-2 is-size-7">Global and Social Impact of Credit Card Fraud</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Full-width image -->
+          <div id="intro-tab-2" class="tab-content is-hidden">
+            <p>
+              Most adversarial research focuses on images. This example shows how to train a neural network that is robust to adversarial examples using fast gradient sign method (FGSM) adversarial training.
+              Neural networks can be susceptible to a phenomenon known as <strong>adversarial examples</strong>, where very small changes to an input can cause it to be misclassified. These changes are often imperceptible to humans.
+            </p>
+            <p>
+              But in finance, tabular data is trickier and more realistic for policy applications.
+              Recent research (Agarwal & Ratha, 2021) showed that even simple black-box attacks can fool models trained to detect fraud.
+            </p>
+            <figure class="image mt-4">
+              <img src="static/images/adversarial_image.png" alt="Adversarial Example on Image Data" style="max-width: 100%;">
+              <figcaption class="has-text-centered mt-1 is-size-7">Adversarial Example in Image Classification</figcaption>
+            </figure>
+          </div>
+
+          <!-- Tab 3: Full-width image -->
+          <div id="intro-tab-3" class="tab-content is-hidden">
+            <p>
+              We simulate adversarial attacks on tabular financial data to test and improve the robustness of fraud detection models.
+              By identifying vulnerabilities that lead to false negatives, our work supports the development of more secure and adaptive AI systems for real-world deployment in financial services.
+            </p>
+            <figure class="image mt-4">
+              <img src="static/images/adversarial_tabular.png" alt="Adversarial Tabular Example" style="max-width: 100%;">
+              <figcaption class="has-text-centered mt-1 is-size-7">Simulating Adversarial Attacks on Tabular Data</figcaption>
+            </figure>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- JS for Tab Switching -->
+<script>
+  const tabs = ["1", "2", "3"];
+  tabs.forEach(n => {
+    document.getElementById(`intro-tab-${n}-btn`).addEventListener("click", () => {
+      tabs.forEach(m => {
+        document.getElementById(`intro-tab-${m}`).classList.add("is-hidden");
+        document.getElementById(`intro-tab-${m}-btn`).classList.remove("is-active");
+      });
+      document.getElementById(`intro-tab-${n}`).classList.remove("is-hidden");
+      document.getElementById(`intro-tab-${n}-btn`).classList.add("is-active");
+    });
+  });
+</script>
 <!-- Introduction -->
 
 <!-- Workflow -->
@@ -143,28 +218,227 @@
 <!-- Workflow -->
 
 
-<!-- Dataset -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Credit Card Fraud Detection - Dataset and EDA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <style>
+    .scrolling-wrapper {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 1rem;
+    }
+
+    .scroll-card {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      width: auto; /* allow natural width */
+      max-width: 400px; /* or adjust as needed */
+    }
+
+    .scrolling-wrapper::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .scrolling-wrapper::-webkit-scrollbar-thumb {
+      background-color: #b5b5b5;
+      border-radius: 4px;
+    }
+
+    .scrolling-wrapper::-webkit-scrollbar-track {
+      background-color: #f0f0f0;
+    }
+
+    figure figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content:not(.is-hidden) {
+      display: block;
+    }
+  </style>
+</head>
+<body>
 <section class="section hero is-light">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
         <h2 class="title is-3">Dataset and EDA</h2>
-        <div class="content has-text-justified">
-          <p>
-            We use the XYZ Credit Card Transactions dataset. This dataset contains N rows and M features including transaction amount, time, merchant category, etc.
-          </p>
+
+        <!-- Tabs -->
+        <div class="tabs is-toggle is-fullwidth is-medium">
           <ul>
-            <li>EDA includes class imbalance visualization and time distribution</li>
-            <li>Preprocessing: normalization, outlier filtering, and categorical encoding</li>
+            <li class="is-active" id="tab-dataset-btn"><a>Dataset Overview</a></li>
+            <li id="tab-preprocessing-btn"><a>Preprocessing Steps</a></li>
+            <li id="tab-eda-btn"><a>Exploratory Analysis</a></li>
           </ul>
-          <img src="static/images/class_imbalance.png" alt="Class Imbalance Visualization">
-          <img src="static/images/preprocessing.png" alt="Data Preprocessing Flow">
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="content has-text-justified">
+          <!-- Dataset Tab -->
+          <div id="tab-dataset" class="tab-content">
+            <p>
+              We use the <strong>Credit Card Transactions Fraud Detection Dataset</strong> by Kartik Shenoy. This synthetic dataset was generated using <em>Sparkov</em>, a simulation tool that mirrors real-world credit card transaction behavior while preserving user privacy.
+            </p>
+
+            <div class="card mt-4">
+              <div class="card-content">
+                <p class="title is-5">Why This Dataset?</p>
+                <ul>
+                  <li>Simulates realistic transaction behavior with time and amount variation</li>
+                  <li>Includes both legitimate and fraudulent records for robust modeling</li>
+                  <li>Ethically sourced and publicly available</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="columns is-multiline mt-4">
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Total Transactions</p>
+                  <p><strong>2,627,409</strong></p></div></div>
+              </div>
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Training Set</p>
+                  <p>2,071,690<br><small>(~80%)</small></p></div></div>
+              </div>
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Test Set</p>
+                  <p>555,719<br><small>(~20%)</small></p></div></div>
+              </div>
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Fraudulent Records</p>
+                  <p>14,218<br><small>(0.54%)</small></p></div></div>
+              </div>
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Time Range</p>
+                  <p>2019.01.01 – 2020.12.31</p></div></div>
+              </div>
+              <div class="column is-one-third">
+                <div class="card"><div class="card-content has-text-centered">
+                  <p class="title is-6">Features</p>
+                  <p>23 transaction-level fields incl. amount, time, card type, merchant type, location</p></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preprocessing Tab -->
+          <div id="tab-preprocessing" class="tab-content is-hidden">
+            <p>
+              To ensure quality input for modeling, we applied a structured preprocessing pipeline as follows:
+            </p>
+            <div class="card">
+              <div class="card-content">
+                <ul>
+                  <li><strong>Dataset:</strong> Load raw transaction data from <code>FRAUD_DATA</code> table.</li>
+                  <li><strong>Column Selection:</strong> Drop <code>IDX</code> and <code>TRANS_DATE_TRANS_TIME</code>; split into train/test; drop <code>DATASET</code> after splitting.</li>
+                  <li><strong>Feature Engineering:</strong> Extract <code>TX_HOUR</code>, <code>TX_DAYOFWEEK</code>; normalize <code>AMT</code>, <code>CITY_POP</code>; binary encode <code>GENDER</code>.</li>
+                  <li><strong>Categorical Encoding:</strong> Use <code>LabelEncoder</code> on <code>CATEGORY</code>, <code>MERCHANT</code>, <code>JOB</code>, <code>STATE</code>, fitted on combined train + test.</li>
+                  <li><strong>Missing Value Imputation:</strong> Fill numeric columns with mean, categorical with most frequent value.</li>
+                  <li><strong>Feature Scaling:</strong> Standardize numerical features using <code>StandardScaler</code>.</li>
+                </ul>
+              </div>
+            </div>
+            <figure class="image mt-4">
+              <img src="static/images/preprocess.png" alt="Data Preprocessing Flowchart" style="max-width: 100%; height: auto;">
+            </figure>
+          </div>
+
+          <!-- EDA Tab -->
+          <div id="tab-eda" class="tab-content is-hidden">
+            <p>
+              We conducted exploratory data analysis (EDA) to understand key trends and patterns in the data. The visualizations below illustrate transaction behavior and fraud characteristics across various dimensions.
+            </p>
+
+            <div class="scrolling-wrapper mt-4">
+              <div class="scroll-card">
+                <figure>
+                  <img src="static/images/correlation_matrix.png" alt="Correlation Matrix" style="max-width: 100%; height: auto;">
+                  <figcaption class="has-text-centered">Correlation Matrix</figcaption>
+                </figure>
+              </div>
+              <div class="scroll-card">
+                <figure>
+                  <img src="static/images/log_amount.png" alt="Log Amount" style="max-width: 100%; height: auto;">
+                  <figcaption class="has-text-centered">Log-Transformed Transaction Amount</figcaption>
+                </figure>
+              </div>
+              <div class="scroll-card">
+                <figure>
+                  <img src="static/images/fraud_category.png" alt="Fraud Category" style="max-width: 100%; height: auto;">
+                  <figcaption class="has-text-centered">Fraud Rate by Category</figcaption>
+                </figure>
+              </div>
+              <div class="scroll-card">
+                <figure>
+                  <img src="static/images/fraud_day.png" alt="Fraud by Day" style="max-width: 100%; height: auto;">
+                  <figcaption class="has-text-centered">Fraud Rate by Day of the Week</figcaption>
+                </figure>
+              </div>
+              <div class="scroll-card">
+                <figure>
+                  <img src="static/images/fraud_hour.png" alt="Fraud by Hour" style="max-width: 100%; height: auto;">
+                  <figcaption class="has-text-centered">Fraud Rate by Hour of the Day</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<script>
+  document.getElementById('tab-dataset-btn').addEventListener('click', () => {
+    document.getElementById('tab-dataset').classList.remove('is-hidden');
+    document.getElementById('tab-preprocessing').classList.add('is-hidden');
+    document.getElementById('tab-eda').classList.add('is-hidden');
+    document.getElementById('tab-dataset-btn').classList.add('is-active');
+    document.getElementById('tab-preprocessing-btn').classList.remove('is-active');
+    document.getElementById('tab-eda-btn').classList.remove('is-active');
+  });
+
+  document.getElementById('tab-preprocessing-btn').addEventListener('click', () => {
+    document.getElementById('tab-dataset').classList.add('is-hidden');
+    document.getElementById('tab-preprocessing').classList.remove('is-hidden');
+    document.getElementById('tab-eda').classList.add('is-hidden');
+    document.getElementById('tab-preprocessing-btn').classList.add('is-active');
+    document.getElementById('tab-dataset-btn').classList.remove('is-active');
+    document.getElementById('tab-eda-btn').classList.remove('is-active');
+  });
+
+  document.getElementById('tab-eda-btn').addEventListener('click', () => {
+    document.getElementById('tab-dataset').classList.add('is-hidden');
+    document.getElementById('tab-preprocessing').classList.add('is-hidden');
+    document.getElementById('tab-eda').classList.remove('is-hidden');
+    document.getElementById('tab-eda-btn').classList.add('is-active');
+    document.getElementById('tab-dataset-btn').classList.remove('is-active');
+    document.getElementById('tab-preprocessing-btn').classList.remove('is-active');
+  });
+</script>
+
+</body>
+</html>
 <!-- End Dataset -->
+
 
 
 <!-- Models and Results -->
