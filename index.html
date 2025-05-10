@@ -543,7 +543,7 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column column is-fullwidth">
-        <h2 class="title is-3">Models and Results</h2>
+        <h2 class="title is-3">Modelling</h2>
         <section class="section" style="padding: 0;">
           <div class="has-text-centered" style="margin-bottom: 2rem;">
             <iframe 
@@ -586,73 +586,191 @@
   </div>
 </section>
 
-<!-- End Models and Results -->
-<!-- Three-Column Informational Cards -->
+
+
+
+<!-- Adversarial Modeling: Feature Perturbation (Full Section) -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-fullwidth">
+        <h2 class="title is-3">Adversarial Modeling: Feature Perturbation</h2>
+
+        <!-- Explanation Box -->
+        <div class="box" style="background-color: #fefefe; border-left: 5px solid #ff3860; padding: 2rem;">
+          <p class="has-text-justified" style="margin-bottom: 1.5rem;">
+            Traditional model evaluations often fail to account for how fraudsters adapt their behavior. To better approximate real-world adversarial tactics, we applied <strong>targeted feature perturbations</strong> that simulate subtle manipulation of transaction characteristics:
+          </p>
+
+          <ul class="has-text-left" style="margin-bottom: 1.5rem; margin-left: 1rem;">
+            <li><code>amt</code>: Increased transaction amount by 10%</li>
+            <li><code>hour</code>: Shifted transaction time by 3 hours</li>
+            <li><code>distance_from_home</code>: Reduced to appear closer to the user's location</li>
+          </ul>
+
+          <p class="has-text-justified" style="margin-bottom: 1.5rem;">
+            After perturbation, model behavior varied significantly:
+          </p>
+
+          <ul class="has-text-left" style="margin-bottom: 1.5rem; margin-left: 1rem;">
+            <li>✅ <strong>Random Forest</strong> showed strong robustness, with fraud recall dropping slightly from <code>0.6275</code> to <code>0.5660</code> and F1-score from <code>0.7461</code> to <code>0.6983</code>.</li>
+            <li>✅ <strong>MLP</strong> remained stable, with a minor increase in fraud recall (<code>0.5674 → 0.5795</code>) and only a slight F1 decrease (<code>0.6268 → 0.6060</code>).</li>
+            <li>⚠️ <strong>Logistic Regression</strong> had high recall but extremely low precision, resulting in poor F1-score overall (<code>0.1359 → 0.1276</code>).</li>
+            <li>⚠️ <strong>Decision Tree</strong> performance declined significantly, with F1 dropping from <code>0.6719</code> to <code>0.5396</code>.</li>
+            <li>⚠️ <strong>Naive Bayes</strong> showed minimal change in recall but a slight drop in F1-score, confirming its generally weak fraud detection capability.</li>
+            <li>❌ <strong>KNN</strong> performed the worst, with extremely low fraud recall (<code>0.0191 → 0.0247</code>) and negligible F1 improvement (<code>0.0330 → 0.0420</code>), indicating poor sensitivity to fraudulent patterns.</li>
+          </ul>
+
+          <p class="has-text-justified">
+            These results underscore the need for <strong>robustness testing</strong> in fraud model validation. Evaluating models under adversarial conditions helps ensure that high-performance metrics hold up even when fraudsters attempt to evade detection.
+          </p>
+        </div>
+
+        <!-- Static Heatmap -->
+        <div class="has-text-centered" style="margin-top: 2rem; margin-bottom: 2rem;">
+          <img src="static/images/Model_Performance_Heatmap.png" 
+               alt="Model Robustness Under Feature Perturbation"
+               style="max-width: 800px; width: 100%; height: auto; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12); border-radius: 8px;">
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs is-centered is-toggle is-toggle-rounded is-small">
+          <ul>
+            <li class="is-active" data-tab="delta-tab"><a>Performance Drop</a></li>
+            <li data-tab="recall-tab"><a>Recall Comparison</a></li>
+            <li data-tab="f1-tab"><a>F1 Score Comparison</a></li>
+            <li data-tab="radar-tab"><a>Radar View</a></li>
+          </ul>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Performance Drop Chart -->
+          <div id="delta-tab" class="tab-pane is-active">
+            <iframe 
+              src="model_delta_perturbation.html" 
+              style="width: 100%; max-width: 850px; height: 540px; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);" 
+              loading="lazy">
+            </iframe>
+            <p class="is-size-6 has-text-grey"><em>Net change in recall and F1 score after adversarial feature perturbation</em></p>
+          </div>
+
+          <!-- Recall -->
+          <div id="recall-tab" class="tab-pane" style="display: none;">
+            <iframe 
+              src="recall_comparison_interactive.html" 
+              style="width: 100%; max-width: 850px; height: 500px; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+              loading="lazy">
+            </iframe>
+            <p class="is-size-6 has-text-grey"><em>Recall Comparison: Clean vs. Perturbed</em></p>
+          </div>
+
+          <!-- F1 Score -->
+          <div id="f1-tab" class="tab-pane" style="display: none;">
+            <iframe 
+              src="f1_comparison_interactive.html" 
+              style="width: 90%; max-width: 760px; height: 460px; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"
+              loading="lazy">
+            </iframe>
+            <p class="is-size-6 has-text-grey"><em>F1 Score Comparison: Clean vs. Perturbed</em></p>
+          </div>
+
+          <!-- Radar -->
+          <div id="radar-tab" class="tab-pane" style="display: none;">
+            <iframe 
+              src="radar_comparison_interactive.html" 
+              style="width: 90%; max-width: 760px; height: 550px; border: none; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);"
+              loading="lazy">
+            </iframe>
+            <p class="is-size-6 has-text-grey"><em>Radar Chart: All Models Across All Metrics</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tabs Switch Script -->
+<script>
+  document.querySelectorAll(".tabs ul li").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tabs ul li").forEach(t => t.classList.remove("is-active"));
+      document.querySelectorAll(".tab-pane").forEach(p => p.style.display = "none");
+
+      tab.classList.add("is-active");
+      const tabId = tab.getAttribute("data-tab");
+      document.getElementById(tabId).style.display = "block";
+    });
+  });
+</script>
+
+
+
+
+
+
+<!-- Implications and Recommendations -->
 <section class="section">
   <div class="container is-max-desktop">
-    <div class="columns is-variable is-8">
+    <h2 class="title is-3 has-text-centered" style="margin-bottom: 2rem;">
+      Implications and Recommendations
+    </h2>
 
-      <!-- Card 1: Robustness -->
-      <div class="column">
+    <div class="columns is-multiline is-variable is-8">
+
+      <!-- Card 1: Rare Fraud Detection -->
+      <div class="column is-one-third">
         <div class="card">
-          <header class="card-header has-background-primary-light">
-            <p class="card-header-title has-text-primary">
-              🔎 Robustness to Perturbations
+          <header class="card-header has-background-warning-light">
+            <p class="card-header-title has-text-warning-dark">
+              ⚠️ Rare Fraud Detection
             </p>
           </header>
           <div class="card-content">
             <div class="content">
-              We introduced adversarial noise (ε = 0.1) using FGSM to test model stability.
+              Models like <strong>MLP</strong> and <strong>Random Forest</strong> perform well on rare fraud cases — far better than accuracy-focused methods.
               <br><br>
-              <strong>Random Forest AUC dropped:</strong> 0.920 → 0.796  
-              <br>
-              <strong>MLP dropped:</strong> 0.905 → 0.811
-              <br><br>
-              Accuracy alone isn’t enough — real-world systems must handle manipulation.
+              Use <strong>recall and F1-score</strong> to capture minority-class fraud.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 2: Attack Method -->
-      <div class="column">
+      <!-- Card 2: Robustness Evaluation -->
+      <div class="column is-one-third">
         <div class="card">
-          <header class="card-header has-background-link-light">
-            <p class="card-header-title has-text-link">
-              🧪 Adversarial Attack
+          <header class="card-header has-background-info-light">
+            <p class="card-header-title has-text-info-dark">
+              🧪 Stress Testing Models
             </p>
           </header>
           <div class="card-content">
             <div class="content">
-              We used <strong>Fast Gradient Sign Method (FGSM)</strong> to craft small input changes.  
+              We applied feature perturbations to mimic real-world fraud strategies.
               <br><br>
-              Features like <code>Amount</code> and <code>V1–V5</code> were perturbed just enough to flip predictions.  
-              <br><br>
-              These inputs looked “normal” but misled the models.
+              This revealed weaknesses hidden in clean test results — <strong>Decision Trees</strong> failed under minor changes.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Card 3: Implications -->
-      <div class="column">
+      <!-- Card 3: Banking Recommendations -->
+      <div class="column is-one-third">
         <div class="card">
           <header class="card-header has-background-success-light">
-            <p class="card-header-title has-text-success">
-              📈 Real-World Implications
+            <p class="card-header-title has-text-success-dark">
+              🏦 Banking Strategy
             </p>
           </header>
           <div class="card-content">
             <div class="content">
-              Deploying fraud models? Accuracy isn’t enough.  
-              <br><br>
-              We recommend:
+              We suggest:
               <ul>
-                <li>Robustness testing</li>
-                <li>Adversarial training</li>
-                <li>Transparent benchmarks</li>
+                <li>Test fraud models under attack</li>
+                <li>Retrain on recent patterns</li>
+                <li>Use ensemble models for balance</li>
               </ul>
-              Banks need adaptive AI to fight real-world fraud.
+              <strong>Adaptability beats static rules.</strong>
             </div>
           </div>
         </div>
@@ -661,6 +779,10 @@
     </div>
   </div>
 </section>
+
+
+
+
 
 
 
